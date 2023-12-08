@@ -13,7 +13,7 @@ public class Tablero {
         StringBuilder sb = new StringBuilder(); 
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
-                sb.append(fichas[i][j]);
+                sb.append(fichas[i][j].getColor());
             }
             sb.append("\n");
         }

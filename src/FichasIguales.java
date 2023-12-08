@@ -3,44 +3,49 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Juego {
-    public static void main(String[] args) throws Exception {
-        Juego juego = new Juego(); 
-        juego.iniciarJuego(); 
+public class FichasIguales {
+    
+    private Tablero[] juegos; 
+    int numJuegos; 
+
+    public FichasIguales(Tablero[] juegos){
+        this.juegos = juegos; 
     }
     
-    public void iniciarJuego() throws InputMismatchException{
+    public void init() throws InputMismatchException{
         int nGames = leerJuegos();
-        inicializarTableros(nGames); // Lee los tableros del usuario. 
+        crearTableros(nGames);
         
 
-        for(int i = 0; i < nGames; i++)
-            play(games.get(i));
+        
     }
 
     public int leerJuegos(){
-        Scanner scanner = new Scanner(System.in); 
+        Scanner scanner = new Scanner(System.in);  
 
         // Lee el número de juegos que el jugador quiere jugar. 
         int nGames = scanner.nextInt(); 
         if(nGames < 1){
-            scanner.close(); 
             throw new InputMismatchException("El número de juegos tiene que ser positivo."); 
-        }
-        scanner.close(); 
+        } 
+        scanner.nextLine();
+        scanner.nextLine(); 
 
         return nGames; 
     }
 
-    public void inicializarTableros(int nGames){
+    public ArrayList<Ficha[][]> inicializarTableros(int nGames){
         List<ArrayList<String>> games = new ArrayList<>(nGames); 
         for(int i = 0 ; i < nGames; i++)
             games.add(new ArrayList<String>());
-
+ 
+        ArrayList<Ficha[][]> juegosFichas = new ArrayList<>(nGames); 
         for(int i = 0; i < nGames; i++){
             leerTablero(games.get(i)); 
-            convertToFichas(games.get(i));
+            juegosFichas.add(convertToFichas(games.get(i)));
+            
         }
+        return juegosFichas; 
     }
 
     public void leerTablero(ArrayList<String> game){
@@ -56,21 +61,7 @@ public class Juego {
             addRow(row, game, c);
         }while(!row.isEmpty()); 
         
-        scanner.close(); 
-    }
-
-    public static void play(ArrayList<String> gameMatrix){
-        int c = gameMatrix.get(0).length(); 
-        int f = gameMatrix.size(); 
-        char[][] gameChar = new char[f][c]; 
-
-        for(int i = 0; i < f; i ++){
-            for(int j = 0; j < c; j++){
-                game[i][j] = gameMatrix.get(i).charAt(j); 
-            }
-        }
-
-        Tablero game = new Tablero(gameChar, f, c); 
+        
     }
 
     public static void addRow(String input, ArrayList<String> game, int nColumns){
@@ -83,12 +74,11 @@ public class Juego {
                     throw new InputMismatchException("Solo hay fichaf rojas: R, verdes: V y azules: A.");
                 
             }
-            convertToFichas(input); 
             game.add(input); 
         }
     }
 
-    public static void convertToFichas(ArrayList<String> tablero){
+    public Ficha[][] convertToFichas(ArrayList<String> tablero){
         int columnas = tablero.get(0).length(); 
         int filas = tablero.size(); 
         Ficha[][] fichas = new Ficha[filas][columnas]; 
@@ -98,5 +88,19 @@ public class Juego {
                 fichas[i][j] = new Ficha(color, i, j);
             }
         }
+        return fichas; 
+    }
+
+    public void crearTableros(int nGames){
+        ArrayList<Ficha[][]> juegosFicha = inicializarTableros(nGames); // Lee los tableros del usuario. 
+        for(Ficha[][] fichas : juegosFicha){
+            int filas = fichas.length; 
+            int columnas = fichas[0].length; 
+            Tablero tablero = new Tablero(fichas, filas, columnas); 
+        }
+    }
+
+    public void jugar(){
+
     }
 }
