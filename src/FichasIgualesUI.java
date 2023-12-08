@@ -33,7 +33,7 @@ public class FichasIgualesUI {
 
                 entradasUsuario.get(i).add(fila); 
             }
-            juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)), entradasUsuario.size(), columnasObjetivo); 
+            juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)), entradasUsuario.get(i).size(), columnasObjetivo); 
         }
         return juegos;         
     }

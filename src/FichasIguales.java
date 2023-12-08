@@ -14,6 +14,11 @@ public class FichasIguales {
     }
     
     public void jugar(){ 
+        for(Tablero tablero : this.juegos){
+            Tablero tableroInicial = tablero; 
 
+            tablero.realizarMovimiento(2, 0); 
+            
+        }
     }
 }
