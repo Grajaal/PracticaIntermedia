@@ -1,19 +1,19 @@
 public class Tablero {
-    private Ficha[][] fichas; 
-    private int rows; 
-    private int columns; 
+    private char[][] fichas; 
+    private int filas; 
+    private int columnas; 
 
-    public Tablero(Ficha[][] fichas, int rows, int columns){
-        this.rows = rows; 
-        this.columns = columns; 
+    public Tablero(char[][] fichas, int rows, int columns){
+        this.filas = rows; 
+        this.columnas = columns; 
         this.fichas = fichas; 
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder(); 
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
-                sb.append(fichas[i][j].getColor());
+        for(int i = 0; i < filas; i++){
+            for(int j = 0; j < columnas; j++){
+                sb.append(fichas[i][j]);
             }
             sb.append("\n");
         }
