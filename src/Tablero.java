@@ -21,10 +21,13 @@ public class Tablero {
 
     public void realizarMovimiento(int fila, int columna){
         char color = this.fichas[fila][columna];
+        boolean[][] grupoFichas = new boolean[this.filas][this.columnas]; 
+
+        encontrarGrupo(grupoFichas, fila, columna, color);
 
         for (int i = 0; i < this.filas; i++) {
             for (int j = 0; j < this.columnas; j++) {
-                if(this.fichas[i][j] == color){
+                if(grupoFichas[i][j] == true){
                     this.fichas[i][j] = ' '; 
                 }
             }
@@ -40,6 +43,23 @@ public class Tablero {
 
         System.out.println(this.toString());
 
+    }
+
+    public void encontrarGrupo(boolean[][] grupoFichas, int fila, int columna, char color) {
+        if (fila < 0 || fila == this.filas || columna < 0 || columna == this.columnas || grupoFichas[fila][columna]) {
+            return;
+        }
+
+        if(this.fichas[fila][columna] != color){
+            return; 
+        }
+
+        grupoFichas[fila][columna] = true;
+
+        encontrarGrupo(grupoFichas, fila - 1, columna, color); 
+        encontrarGrupo(grupoFichas, fila + 1, columna, color); 
+        encontrarGrupo(grupoFichas, fila, columna - 1, color); 
+        encontrarGrupo(grupoFichas, fila, columna + 1, color); 
     }
 
     public void bajarFichas(){
