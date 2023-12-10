@@ -11,7 +11,6 @@ public class FichasIgualesUI {
         if(numJuegos < 1)
             throw new InputMismatchException("El número de juegos tiene que ser positivo.");
         scanner.nextLine(); 
-        scanner.nextLine(); 
 
         String fila; 
         int columnasObjetivo; 
@@ -21,6 +20,7 @@ public class FichasIgualesUI {
         Tablero[] juegos = new Tablero[numJuegos]; 
 
         for(int i = 0; i < numJuegos; i++){
+            scanner.nextLine();
             fila = scanner.nextLine(); 
             if(!coloresCorrectos(fila)) throw new InputMismatchException("Las fichas introducidas en el tablero no son rojas, verdes o azules."); 
             columnasObjetivo = fila.length(); 
@@ -36,6 +36,10 @@ public class FichasIgualesUI {
             juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)), entradasUsuario.get(i).size(), columnasObjetivo); 
         }
         return juegos;         
+    }
+
+    public void salida(){
+        System.out.println("Juego 1:");
     }
 
     public boolean coloresCorrectos(String fila){
@@ -60,5 +64,6 @@ public class FichasIgualesUI {
         return tablero; 
     }
 
+    
     
 }

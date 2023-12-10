@@ -3,12 +3,28 @@ public class Tablero {
     private int filas; 
     private int columnas; 
     private int numFichas; 
+    private int score; 
 
     public Tablero(char[][] fichas, int rows, int columns){
         this.filas = rows; 
         this.columnas = columns; 
         this.fichas = fichas; 
         this.numFichas = filas * columnas; 
+        this.score = 0; 
+    }
+
+    public Tablero(Tablero otroTablero){
+        this.filas = otroTablero.getFilas();
+        this.columnas = otroTablero.getColumnas(); 
+        this.fichas = new char[this.filas][this.columnas]; 
+        this.score = otroTablero.getScore(); 
+        this.numFichas = otroTablero.getNumFichas(); 
+        char[][] otroTableroFichas = otroTablero.getFichas(); 
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+                this.fichas[i][j] = otroTableroFichas[i][j]; 
+            }
+        }
     }
 
     public int getFilas(){
@@ -19,30 +35,63 @@ public class Tablero {
         return this.columnas; 
     }
 
-    public void realizarMovimiento(int fila, int columna){
+    public char[][] getFichas(){
+        return this.fichas; 
+    }
+
+    public int getScore(){
+        return this.score; 
+    }
+
+    public int getNumFichas(){
+        return this.numFichas; 
+    }
+
+    public void setNumFichas(int numFichas){
+        this.numFichas = numFichas; 
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
+
+    public void setFichas(char[][] fichas){
+        this.fichas = fichas; 
+    }
+
+    public boolean fin(){
+        return this.getNumFichas() < 4 && this.comprobarNumeroFicharDeColor('A') < 2 && 
+        this.comprobarNumeroFicharDeColor('R') < 2 && this.comprobarNumeroFicharDeColor('V') < 2; 
+    }
+
+    public int realizarMovimiento(int fila, int columna){
         char color = this.fichas[fila][columna];
         boolean[][] grupoFichas = new boolean[this.filas][this.columnas]; 
 
         encontrarGrupo(grupoFichas, fila, columna, color);
+        int numFichasMismoGrupo = contarFichasMismoGrupo(grupoFichas); 
+    
+        if(numFichasMismoGrupo > 1){
+            eliminarFichasGrupo(grupoFichas);
+            calcularScore(numFichasMismoGrupo); 
+            bajarFichas();
+            contraerColumnasVacias(); 
+            return numFichasMismoGrupo; 
+        }
+        return 0; 
 
-        for (int i = 0; i < this.filas; i++) {
-            for (int j = 0; j < this.columnas; j++) {
+    }
+
+    public int contarFichasMismoGrupo(boolean[][] grupoFichas){
+        int numFichasMismoGrupo = 0; 
+        for(int i = 0; i < this.filas; i++){
+            for(int j = 0; j < this.columnas; j++){
                 if(grupoFichas[i][j] == true){
-                    this.fichas[i][j] = ' '; 
+                    numFichasMismoGrupo++; 
                 }
             }
         }
-
-        bajarFichas();
-
-        for(int j = 0; j < this.columnas - 1; j++){
-            if(esColumnaVacia(j)){
-                contraerFichas(j + 1);
-            }
-        }
-
-        System.out.println(this.toString());
-
+        return numFichasMismoGrupo; 
     }
 
     public void encontrarGrupo(boolean[][] grupoFichas, int fila, int columna, char color) {
@@ -62,6 +111,17 @@ public class Tablero {
         encontrarGrupo(grupoFichas, fila, columna + 1, color); 
     }
 
+    public void eliminarFichasGrupo(boolean[][] grupoFichas){
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+                if(grupoFichas[i][j] == true){
+                    this.fichas[i][j] = ' '; 
+                    this.numFichas--; 
+                }
+            }
+        }
+    }
+
     public void bajarFichas(){
         for (int j = 0; j < this.columnas; j++) {
             for (int i = this.filas - 2; i >= 0; i--) {
@@ -74,6 +134,14 @@ public class Tablero {
                 }
             }
         }
+    }
+
+    public void contraerColumnasVacias(){
+        for(int j = this.columnas - 2; j >= 0; j--){
+             if(esColumnaVacia(j)){
+                contraerFichas(j + 1);
+             }
+         }
     }
 
     public void contraerFichas(int columna){
@@ -103,6 +171,10 @@ public class Tablero {
         this.fichas[fila][columna] = ' ';     
     }
 
+    public void calcularScore(int m){
+         this.score += (int) Math.pow(m - 2, 2); 
+    }
+
     public String toString(){
         StringBuilder sb = new StringBuilder(); 
         for(int i = 0; i < filas; i++){
@@ -112,5 +184,31 @@ public class Tablero {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public boolean noSePuedenEliminarMasFichas(){
+        return this.numFichas < 2; 
+    }
+
+    public int comprobarNumeroFicharDeColor(char color){
+        int fichas = 0; 
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+                if(this.fichas[i][j] == color)
+                    fichas++;
+            }
+        }
+        return fichas; 
+    }
+
+    public Tablero copyOf(){
+        char[][] original = this.getFichas(); 
+        char[][] copy = new char[this.filas][this.columnas]; 
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < this.columnas; j++) {
+                copy[i][j] = original[i][j]; 
+            }
+        }
+        return new Tablero(copy, this.filas, this.columnas); 
     }
 }
