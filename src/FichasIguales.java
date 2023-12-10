@@ -19,8 +19,12 @@ public class FichasIguales {
         for(int i = 1; i <= this.numJuegos; i++){
             System.out.println("Juego " + i + ":");
             Tablero tableroFinal = buscarMejorMovimiento(this.juegos[i - 1], 1);
-            System.out.println("Puntuación final: " + tableroFinal.getScore() + ", quedando " + tableroFinal.getNumFichas() + " fichas.");
-            System.out.println();
+            String numFichas; 
+            if(tableroFinal.getNumFichas() == 1) numFichas = " ficha.";
+            else numFichas = " fichas.";
+            System.out.println("Puntuación final: " + tableroFinal.getScore() + ", quedando " + tableroFinal.getNumFichas() + numFichas);
+            if(i < this.numJuegos)
+                System.out.println();
         }
     }
 
@@ -66,9 +70,15 @@ public class FichasIguales {
             }
         }
         //System.out.println(mejorTablero.toString());
+        if(mejorTablero == null) return tablero; 
         int filaSimetrica = mejorTablero.getFilas() - 1 - movimiento.getFila(); 
+        String puntuacion, numFichas; 
+        if(movimiento.getScore() == 1) puntuacion = " punto.";
+        else puntuacion = " puntos.";
+        if(movimiento.getNumFichasEliminadas() == 1) numFichas = " ficha";
+        else numFichas = " fichas"; 
         System.out.println("Movimiento " + numMovimiento + " en (" + (filaSimetrica + 1) + ", " + (movimiento.getColumna() + 1) + "): eliminó " +
-        movimiento.getNumFichasEliminadas() + " de color " + movimiento.getColor() + " y obtuvo " + movimiento.getScore() + " puntos.");
+        movimiento.getNumFichasEliminadas() + numFichas + " de color " + movimiento.getColor() + " y obtuvo " + movimiento.getScore() + puntuacion);
         return buscarMejorMovimiento(mejorTablero, numMovimiento + 1);    
     }
 

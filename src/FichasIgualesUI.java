@@ -1,69 +1,71 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class FichasIgualesUI {
-    public Tablero[] init(){
-        Scanner scanner = new Scanner(System.in);  
+    public Tablero[] init() {
+        Scanner scanner = new Scanner(System.in);
 
-        // Lee el número de juegos que el jugador quiere jugar. 
-        int numJuegos = scanner.nextInt(); 
-        if(numJuegos < 1)
-            throw new InputMismatchException("El número de juegos tiene que ser positivo.");
-        scanner.nextLine(); 
+        // Lee el número de juegos que el jugador quiere jugar.
+        int numJuegos = Integer.parseInt(scanner.nextLine());
+        if (numJuegos < 1)
+            System.exit(0);
+        if(scanner.nextLine().length() != 0)
+            System.exit(0); 
 
-        String fila; 
-        int columnasObjetivo; 
-        ArrayList<ArrayList<String>> entradasUsuario = new ArrayList<>(numJuegos); 
-        for(int i = 0; i < numJuegos; i++)
-            entradasUsuario.add(new ArrayList<>()); 
-        Tablero[] juegos = new Tablero[numJuegos]; 
+        String fila;
+        int columnasObjetivo;
+        ArrayList<ArrayList<String>> entradasUsuario = new ArrayList<>(numJuegos);
+        for (int i = 0; i < numJuegos; i++)
+            entradasUsuario.add(new ArrayList<>());
+        Tablero[] juegos = new Tablero[numJuegos];
 
-        for(int i = 0; i < numJuegos; i++){
-            scanner.nextLine();
-            fila = scanner.nextLine(); 
-            if(!coloresCorrectos(fila)) throw new InputMismatchException("Las fichas introducidas en el tablero no son rojas, verdes o azules."); 
-            columnasObjetivo = fila.length(); 
-            if(columnasObjetivo > 20) throw new InputMismatchException("El número de columnas debe ser menor o igual a 20.");
-            entradasUsuario.get(i).add(fila); 
+        for (int i = 0; i < numJuegos; i++) {
+            fila = scanner.nextLine();
+            if (!coloresCorrectos(fila))
+                System.exit(0);
+            columnasObjetivo = fila.length();
+            if (columnasObjetivo > 20 || columnasObjetivo == 0)
+                System.exit(0);
+            entradasUsuario.get(i).add(fila);
 
-            while(!(fila = scanner.nextLine()).isEmpty()){
-                if(fila.length() != columnasObjetivo) throw new InputMismatchException("Las columnas no son las mismas en todas las filas del tablero introducido.");
-                if(!coloresCorrectos(fila)) throw new InputMismatchException("Las fichas introducidas en el tablero no son rojas, verdes o azules."); 
+            while (scanner.hasNextLine() && !(fila = scanner.nextLine()).isEmpty()) {
+                if (fila.length() != columnasObjetivo)
+                    System.exit(0);
+                if (!coloresCorrectos(fila))
+                    System.exit(0);
 
-                entradasUsuario.get(i).add(fila); 
+                entradasUsuario.get(i).add(fila);
             }
-            juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)), entradasUsuario.get(i).size(), columnasObjetivo); 
+            juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)), entradasUsuario.get(i).size(),
+                    entradasUsuario.get(i).get(0).length());
         }
-        return juegos;         
+        scanner.close();
+        return juegos;
     }
 
-    public void salida(){
-        System.out.println("Juego 1:");
-    }
-
-    public boolean coloresCorrectos(String fila){
-        for(char color : fila.toCharArray()){
-            if(color != 'A' && color != 'V' && color != 'R') 
-                return false; 
+    public boolean coloresCorrectos(String fila) {
+        for (char color : fila.toCharArray()) {
+            if (color != 'A' && color != 'V' && color != 'R')
+                return false;
         }
-        return true; 
+        return true;
     }
 
-    public char[][] convertirArrayChar(ArrayList<String> entradaUsuario){
-        int filas = entradaUsuario.size(); 
-        int columnas = entradaUsuario.get(0).length(); 
-        char[][] tablero = new char[filas][columnas]; 
+    public char[][] convertirArrayChar(ArrayList<String> entradaUsuario) {
+        int filas = entradaUsuario.size();
+        int columnas = entradaUsuario.get(0).length();
+        char[][] tablero = new char[filas][columnas];
 
-        for(int i = 0; i < filas; i++){
-            for(int j = 0; j < columnas; j++){
-                tablero[i][j] = entradaUsuario.get(i).charAt(j); 
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                tablero[i][j] = entradaUsuario.get(i).charAt(j);
             }
         }
 
-        return tablero; 
+        return tablero;
     }
-
-    
-    
 }
