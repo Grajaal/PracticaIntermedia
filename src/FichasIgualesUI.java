@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class FichasIgualesUI {
@@ -40,8 +36,7 @@ public class FichasIgualesUI {
 
                 entradasUsuario.get(i).add(fila);
             }
-            juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)), entradasUsuario.get(i).size(),
-                    entradasUsuario.get(i).get(0).length());
+            juegos[i] = new Tablero(convertirArrayChar(entradasUsuario.get(i)));
         }
         scanner.close();
         return juegos;

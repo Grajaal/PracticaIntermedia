@@ -1,11 +1,12 @@
 public class Movimiento {
-    private Tablero tablero; 
-    private int numFichasEliminadas, score; 
+    private int fila; 
+    private int columna;
     private char color; 
-    private int fila, columna; 
+    private int numFichasEliminadas; 
+    private int score;
+    
 
-    public Movimiento(Tablero tablero, int fila, int columna, char color, int numFichasEliminadas){
-        this.tablero = tablero; 
+    public Movimiento(int fila, int columna, char color, int numFichasEliminadas){
         this.fila = fila; 
         this.columna = columna; 
         this.color = color; 
