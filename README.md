@@ -19,14 +19,14 @@ A move will always be determined by the leftmost and lowest possible tile in its
 > The input to the program will consist of a series of sets. The first input line will contain a positive integer indicating the number of games. The initial arrangement of tokens in each set is given by f rows, one row in each line, from top to bottom. Each row contains c characters, each of which is one of "R", "V" or "A", specifying the colors of the tiles in the row from left to right. Thus the game will be played on a board of f x c positions. A blank line precedes each game.
 
 Example: 
-2
+2\n
 
-AVR
-AAR
-ARR
-VVR
-
-VRA
-RAR
-AAR
-RVV
+AVR\n
+AAR\n
+ARR\n
+VVR\n
+\n
+VRA\n
+RAR\n
+AAR\n
+RVV\n
