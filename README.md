@@ -11,7 +11,7 @@ The object of the game is to remove all the tiles from the board and the game en
 
 The scoring for each game is as follows. The player starts with a score of 0. When a group of m tiles is removed, the player's score increases in left parentheses m minus 2 squared right parentheses. A bonus of 1000 points is awarded if all tiles are removed at the end of the game.
 
-You want to create a program that gives the optimal strategy for any game, i.e. the set of moves that gives the highest possible score. 
+The program gives the optimal strategy for any game, i.e. the set of moves that gives the highest possible score. 
 
 A move will always be determined by the leftmost and lowest possible tile in its group. If there are two different solutions with the same maximum score, the first solution will be given in ascending lexicographic order with respect to the set of coordinates that form the solution, which in turn will be ordered lexicographically in ascending order.
 
